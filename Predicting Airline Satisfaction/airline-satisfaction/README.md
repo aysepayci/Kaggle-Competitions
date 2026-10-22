@@ -7,7 +7,7 @@ Yarışma: https://www.kaggle.com/competitions/playground-series-s6e10
 Yolcu bilgileri ve uçuş deneyimi puanlarından yolcunun memnun olup olmadığını tahmin etmek.
 
 ## Yol Haritası
-- [ ] Faz 00 — Problemi tanı (veri, hedef, metrik)
+- [x] Faz 00 — Problemi tanı (veri, hedef, metrik)
 - [ ] Faz 01 — EDA (keşifsel veri analizi)
 - [ ] Faz 02 — Baseline model
 - [ ] Faz 03 — Feature engineering
