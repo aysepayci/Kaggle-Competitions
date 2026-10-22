@@ -8,7 +8,7 @@ Yolcu bilgileri ve uçuş deneyimi puanlarından yolcunun memnun olup olmadığ�
 
 ## Yol Haritası
 - [x] Faz 00 — Problemi tanı (veri, hedef, metrik)
-- [ ] Faz 01 — EDA (keşifsel veri analizi)
+- [x] Faz 01 — EDA (keşifsel veri analizi)
 - [ ] Faz 02 — Baseline model
 - [ ] Faz 03 — Feature engineering
 - [ ] Faz 04 — Gradient boosting modelleri
