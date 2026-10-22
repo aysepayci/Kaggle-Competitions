@@ -17,7 +17,7 @@ Playground Series verileri **synthetic**'tir: gerçek bir veri setinden (Kaggle'
 |---|---|---|
 | Yolcu | Gender, Customer Type, Age | categorical + numeric |
 | Yolculuk | Type of Travel, Class, Flight Distance | categorical + numeric |
-| Hizmet puanları (14 adet) | Inflight wifi, Online boarding, Seat comfort, Cleanliness… | **ordinal**, 0–5 |
+| Hizmet puanları (13 adet) | Inflight wifi, Online boarding, Seat comfort, Cleanliness… | **ordinal**, 0–5 |
 | Gecikmeler | Departure Delay, Arrival Delay (dakika) | numeric, çok çarpık (skewed) |
 
 **Ordinal** = sayı ama sıralı kategori. 4 puan, 2 puanın "iki katı" değil, sadece "daha iyi". Orijinal veride **0 = "değerlendirilmedi / not applicable"** demek → 0'ı "en kötü" gibi yorumlamak yanlış olabilir. EDA'da kontrol edeceğiz.
