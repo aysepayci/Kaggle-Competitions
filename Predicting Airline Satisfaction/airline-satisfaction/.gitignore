@@ -1,0 +1,36 @@
+# Ham veri — Kaggle'dan indir, repoya ekleme
+data/raw/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Sanal ortamlar
+.env
+.venv/
+env/
+venv/
+.conda/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Büyük model dosyaları
+*.pkl
+*.joblib
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
