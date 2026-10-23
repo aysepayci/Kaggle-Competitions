@@ -12,7 +12,7 @@ Yolcu bilgileri ve uçuş deneyimi puanlarından yolcunun memnun olup olmadığ�
 - [x] Faz 02 — Baseline model
 - [x] Faz 03 — Feature engineering
 - [x] Faz 04 — Gradient boosting modelleri + ensemble
-- [ ] Faz 05 — Hyperparameter tuning
+- [x] Faz 05 — Hyperparameter tuning
 - [ ] Faz 06 — Ensemble ve final submission
 
 ## Klasör Yapısı
@@ -35,4 +35,7 @@ submissions/     # Kaggle'a gönderilen dosyalar
 | 04a | LightGBM + orijinal veri (kötüleştirdi, kullanılmadı) | 0.95737 | |
 | 04b | XGBoost (default) | 0.95798 | |
 | 04b | CatBoost (default) | 0.95850 | |
-| 04b | Ensemble: weighted rank (LGBM+XGB+Cat) | **0.95877** | |
+| 04b | Ensemble: weighted rank (LGBM+XGB+Cat) | 0.95877 | 0.95837 |
+| 05 | LightGBM (tuned) | 0.95893 | |
+| 05 | XGBoost (tuned) | 0.95887 | |
+| 05 | Ensemble: LGBM tuned + XGB tuned + Cat | **0.95919** | |

@@ -1,0 +1,16 @@
+{
+  "holdout_auc": 0.9592233436608701,
+  "trial": 23,
+  "n_trials": 31,
+  "params": {
+    "max_depth": 10,
+    "min_child_weight": 35.083077922206904,
+    "colsample_bytree": 0.4606973881199876,
+    "subsample": 0.9934445223485939,
+    "gamma": 0.0030564941144497694,
+    "reg_alpha": 7.279539522109392,
+    "reg_lambda": 0.002224950747973627,
+    "learning_rate": 0.1,
+    "n_estimators": 310
+  }
+}

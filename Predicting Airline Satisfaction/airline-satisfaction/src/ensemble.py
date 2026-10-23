@@ -74,7 +74,7 @@ def main():
     print("\nWeighted ensemble fold AUC'leri:", fold_aucs(y, weighted_oof).round(5))
 
     pred = sum(wi * rank(t) for wi, t in zip(w, tests))
-    save_submission(test[ID], pred, f"faz04_ensemble_{'_'.join(names)}.csv")
+    save_submission(test[ID], pred, f"ensemble_{'_'.join(names)}.csv")
 
 
 if __name__ == "__main__":

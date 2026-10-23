@@ -39,3 +39,6 @@ submissions/*.csv
 
 # OOF / test tahminleri (ensemble için, yeniden üretilebilir)
 oof/
+
+# CatBoost eğitim logları
+catboost_info/

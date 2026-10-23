@@ -1,0 +1,16 @@
+{
+  "holdout_auc": 0.9593101452793544,
+  "trial": 12,
+  "n_trials": 30,
+  "params": {
+    "num_leaves": 152,
+    "min_child_samples": 136,
+    "colsample_bytree": 0.5664118789094776,
+    "subsample": 0.8267712822357293,
+    "subsample_freq": 1,
+    "reg_alpha": 1.0161401249353565,
+    "reg_lambda": 2.076958458239391,
+    "learning_rate": 0.1,
+    "n_estimators": 154
+  }
+}

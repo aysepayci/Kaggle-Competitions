@@ -10,6 +10,7 @@ Her modelin OOF ve test tahminleri oof/<model>/ altına fold fold kaydedilir:
     python src/models.py xgb
     python src/models.py cat
     python src/models.py cat --budget 150   # ~150 sn sonra durur, sonra kaldığı yerden devam
+    python src/models.py lgbm --tuned       # Faz 05: params/lgbm.json ile → oof/lgbm_tuned
 """
 import argparse
 import time
@@ -25,26 +26,43 @@ from common import CATEGORICAL, ID, N_FOLDS, ROOT, SEED, load_data
 
 OOF_DIR = ROOT / "oof"
 
+PARAMS_DIR = ROOT / "params"
+
 # Üçü de gradient boosting; farkları ağacı nasıl kurdukları:
 # - LightGBM: leaf-wise büyür (en çok kazandıran yaprağı böler) → hızlı, derin/asimetrik ağaçlar
 # - XGBoost : level-wise büyür (seviye seviye) → daha dengeli ağaçlar
 # - CatBoost: symmetric (oblivious) ağaçlar + categorical'lar için ordered target encoding
-MODELS = {
-    "lgbm": lambda: lgb.LGBMClassifier(random_state=SEED, verbose=-1),
-    "xgb": lambda: xgb.XGBClassifier(enable_categorical=True, tree_method="hist", random_state=SEED),
-    "cat": lambda: cb.CatBoostClassifier(cat_features=CATEGORICAL, random_seed=SEED, verbose=0),
+CLASSES = {"lgbm": lgb.LGBMClassifier, "xgb": xgb.XGBClassifier, "cat": cb.CatBoostClassifier}
+FIXED = {  # her zaman geçerli ayarlar (tune edilmez)
+    "lgbm": dict(random_state=SEED, verbose=-1),
+    "xgb": dict(enable_categorical=True, tree_method="hist", random_state=SEED),
+    "cat": dict(cat_features=CATEGORICAL, random_seed=SEED, verbose=0),
 }
+
+
+def build(name, params=None):
+    """Model oluşturur. params=None → default parametreler."""
+    return CLASSES[name](**FIXED[name], **(params or {}))
+
+
+def load_params(name):
+    """src/tune.py'nin bulduğu en iyi parametreler (params/<model>.json)."""
+    import json
+    return json.loads((PARAMS_DIR / f"{name}.json").read_text())["params"]
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("model", choices=MODELS)
+    ap.add_argument("model", choices=CLASSES)
+    ap.add_argument("--tuned", action="store_true", help="params/<model>.json'daki parametrelerle")
     ap.add_argument("--budget", type=float, default=None, help="saniye; dolunca yeni fold'a başlamaz")
     args = ap.parse_args()
 
     train, test, y = load_data()
     X, X_test = train.drop(columns=[ID]), test.drop(columns=[ID])
-    out = OOF_DIR / args.model
+    params = load_params(args.model) if args.tuned else None
+    tag = f"{args.model}_tuned" if args.tuned else args.model
+    out = OOF_DIR / tag
     out.mkdir(parents=True, exist_ok=True)
 
     start = time.time()
@@ -57,7 +75,7 @@ def main():
             print("  süre bütçesi doldu → tekrar çalıştırınca kaldığı yerden devam eder")
             return
         t = time.time()
-        model = MODELS[args.model]()
+        model = build(args.model, params)
         model.fit(X.iloc[tr_idx], y.iloc[tr_idx])
         val = model.predict_proba(X.iloc[va_idx])[:, 1]
         np.save(out / f"fold{fold}_val.npy", val)
@@ -69,9 +87,9 @@ def main():
     for fold, (_, va_idx) in enumerate(skf.split(X, y), 1):
         oof[va_idx] = np.load(out / f"fold{fold}_val.npy")
     test_pred = np.mean([np.load(out / f"fold{f}_test.npy") for f in range(1, N_FOLDS + 1)], axis=0)
-    np.save(OOF_DIR / f"{args.model}_oof.npy", oof)
-    np.save(OOF_DIR / f"{args.model}_test.npy", test_pred)
-    print(f"  [{args.model}] CV AUC = {roc_auc_score(y, oof):.5f}")
+    np.save(OOF_DIR / f"{tag}_oof.npy", oof)
+    np.save(OOF_DIR / f"{tag}_test.npy", test_pred)
+    print(f"  [{tag}] CV AUC = {roc_auc_score(y, oof):.5f}")
 
 
 if __name__ == "__main__":
