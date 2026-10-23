@@ -16,6 +16,12 @@ SEED = 42
 N_FOLDS = 5
 
 CATEGORICAL = ["Gender", "Customer Type", "Type of Travel", "Class"]
+SERVICE = [
+    "Inflight wifi service", "Departure/Arrival time convenient", "Ease of Online booking",
+    "Gate location", "Food and drink", "Online boarding", "Seat comfort",
+    "Inflight entertainment", "On-board service", "Leg room service",
+    "Baggage handling", "Checkin service", "Cleanliness",
+]
 
 
 def load_data():
@@ -51,6 +57,12 @@ def run_cv(make_model, X, y, X_test, name=""):
     cv_auc = roc_auc_score(y, oof)
     print(f"  [{name}] CV AUC = {cv_auc:.5f}")
     return oof, test_pred, cv_auc
+
+
+def fold_aucs(y, oof):
+    """OOF tahminlerinden fold bazında AUC (run_cv ile aynı split'ler)."""
+    skf = StratifiedKFold(n_splits=N_FOLDS, shuffle=True, random_state=SEED)
+    return np.array([roc_auc_score(y.iloc[va], oof[va]) for _, va in skf.split(oof, y)])
 
 
 def save_submission(test_ids, pred, filename):

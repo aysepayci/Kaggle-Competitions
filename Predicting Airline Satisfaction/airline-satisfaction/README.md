@@ -10,7 +10,7 @@ Yolcu bilgileri ve uçuş deneyimi puanlarından yolcunun memnun olup olmadığ�
 - [x] Faz 00 — Problemi tanı (veri, hedef, metrik)
 - [x] Faz 01 — EDA (keşifsel veri analizi)
 - [x] Faz 02 — Baseline model
-- [ ] Faz 03 — Feature engineering
+- [x] Faz 03 — Feature engineering
 - [ ] Faz 04 — Gradient boosting modelleri
 - [ ] Faz 05 — Hyperparameter tuning
 - [ ] Faz 06 — Ensemble ve final submission
@@ -30,3 +30,5 @@ submissions/     # Kaggle'a gönderilen dosyalar
 |-----|-------|----|-----------|
 | 02 | Logistic Regression | 0.92156 | 0.92227 |
 | 02 | LightGBM (default) | 0.95779 | 0.95723 |
+| 03 | LogReg + one-hot features | 0.94877 | |
+| 03 | LightGBM + tüm FE (gürültü, kullanılmadı) | 0.95780 | |
