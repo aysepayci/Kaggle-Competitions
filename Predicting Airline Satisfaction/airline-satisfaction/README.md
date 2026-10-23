@@ -28,5 +28,5 @@ submissions/     # Kaggle'a gönderilen dosyalar
 ## Sonuçlar
 | Faz | Model | CV | Public LB |
 |-----|-------|----|-----------|
-| 02 | Logistic Regression | 0.92156 | |
-| 02 | LightGBM (default) | 0.95779 | |
+| 02 | Logistic Regression | 0.92156 | 0.92227 |
+| 02 | LightGBM (default) | 0.95779 | 0.95723 |

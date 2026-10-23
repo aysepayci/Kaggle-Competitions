@@ -13,11 +13,11 @@ Feature engineering ve tuning'e geçmeden önce bir **referans skor** lazım. Yo
 - EDA'da train/test dağılımı aynı çıktığı için CV skoru leaderboard'u iyi yansıtmalı.
 
 ## Sonuçlar
-| Model | CV AUC | Fold std | Süre |
-|---|---|---|---|
-| Sabit tahmin (sample_submission) | 0.5000 | — | — |
-| Logistic Regression | 0.92156 | ~0.0005 | ~20 sn |
-| LightGBM (default) | **0.95779** | ~0.0006 | ~40 sn |
+| Model | CV AUC | Fold std | Süre | Public LB |
+|---|---|---|---|---|
+| Sabit tahmin (sample_submission) | 0.5000 | — | — | — |
+| Logistic Regression | 0.92156 | ~0.0005 | ~20 sn | 0.92227 |
+| LightGBM (default) | **0.95779** | ~0.0006 | ~40 sn | 0.95723 |
 
 ## Neden LightGBM bu kadar önde?
 EDA'daki bulgular doğrudan açıklıyor:
@@ -37,3 +37,8 @@ EDA'daki bulgular doğrudan açıklıyor:
 - LR farkını kapatmak için `is_zero` flag'leri ve one-hot puanlar → linear model ne kadar yaklaşır?
 - `travel_class` interaction, hizmet kümelerinin ortalaması, `arr - dep` gecikme farkı
 - Her yeni feature'ı **tek tek** ekleyip LightGBM CV AUC'sindeki değişimi ölçmek
+
+## CV ↔ Public LB tutarlılığı
+CV ile LB arasındaki fark her iki modelde de ~0.0006–0.0007 ve **sıralama aynı** (LGBM > LR).
+→ CV güvenilir. Bundan sonra kararları CV'ye göre veriyoruz, her denemeyi submit etmiyoruz.
+(Public LB test verisinin sadece bir kısmıyla hesaplanır; ona göre karar vermek **overfitting to the leaderboard** riskidir.)
