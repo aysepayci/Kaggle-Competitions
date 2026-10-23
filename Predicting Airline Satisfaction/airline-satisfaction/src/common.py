@@ -37,10 +37,28 @@ def load_data():
     return train, test, y
 
 
-def run_cv(make_model, X, y, X_test, name=""):
+def load_original(columns):
+    """
+    Orijinal "Airline Passenger Satisfaction" verisi (train + test, ~130k gerçek satır).
+    Playground verisi bundan üretildi → ek training verisi olarak kullanılabilir.
+    - Fazladan 'Inflight service' sütunu playground'da yok → atılıyor
+    - Target metin → 0/1
+    """
+    orig = pd.concat([pd.read_csv(RAW / "original" / f, index_col=0) for f in ("train.csv", "test.csv")],
+                     ignore_index=True)
+    y = (orig.pop(TARGET) == "satisfied").astype(int)
+    orig = orig[columns]
+    for col in CATEGORICAL:
+        orig[col] = pd.Categorical(orig[col], categories=sorted(orig[col].unique()))
+    return orig, y
+
+
+def run_cv(make_model, X, y, X_test, name="", extra=None):
     """
     Stratified K-Fold CV.
     - make_model: her fold'da yeni (eğitilmemiş) model döndüren fonksiyon
+    - extra: (X_extra, y_extra) → SADECE training fold'larına eklenir, validation'a asla.
+      Böylece CV skoru hâlâ yarışma verisi üzerinde ölçülür.
     - Döndürür: oof (train için out-of-fold tahminler), test tahmini (fold ortalaması), CV AUC
     """
     skf = StratifiedKFold(n_splits=N_FOLDS, shuffle=True, random_state=SEED)
@@ -49,7 +67,11 @@ def run_cv(make_model, X, y, X_test, name=""):
 
     for fold, (tr_idx, va_idx) in enumerate(skf.split(X, y), 1):
         model = make_model()
-        model.fit(X.iloc[tr_idx], y.iloc[tr_idx])
+        X_tr, y_tr = X.iloc[tr_idx], y.iloc[tr_idx]
+        if extra is not None:
+            X_tr = pd.concat([X_tr, extra[0]], ignore_index=True)
+            y_tr = pd.concat([y_tr, extra[1]], ignore_index=True)
+        model.fit(X_tr, y_tr)
         oof[va_idx] = model.predict_proba(X.iloc[va_idx])[:, 1]
         test_pred += model.predict_proba(X_test)[:, 1] / N_FOLDS
         print(f"  [{name}] fold {fold}: AUC = {roc_auc_score(y.iloc[va_idx], oof[va_idx]):.5f}")

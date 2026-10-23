@@ -32,3 +32,4 @@ submissions/     # Kaggle'a gönderilen dosyalar
 | 02 | LightGBM (default) | 0.95779 | 0.95723 |
 | 03 | LogReg + one-hot features | 0.94877 | |
 | 03 | LightGBM + tüm FE (gürültü, kullanılmadı) | 0.95780 | |
+| 04a | LightGBM + orijinal veri (kötüleştirdi, kullanılmadı) | 0.95737 | |
