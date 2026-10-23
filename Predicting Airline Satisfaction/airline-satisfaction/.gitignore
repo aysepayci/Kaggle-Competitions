@@ -34,3 +34,5 @@ venv/
 
 # Windows
 Thumbs.db
+# Submission dosyaları (~8 MB) — skorlar README tablosunda
+submissions/*.csv
